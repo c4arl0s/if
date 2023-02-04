@@ -11,3 +11,17 @@ hello
 World
 OK
 ```
+
+# Evaluate $? with if statement
+
+```bash
+echo "Hellow World!"
+```
+
+```bash
+if (( $? )) ; then echo failed ; else echo OK; fi
+```
+
+```console
+OK
+```
