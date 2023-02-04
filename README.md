@@ -25,3 +25,11 @@ if (( $? )) ; then echo failed ; else echo OK; fi
 ```console
 OK
 ```
+
+```bash
+cd mytmp
+```
+
+```bash
+if (( $? )); then rm * ; fi
+```
