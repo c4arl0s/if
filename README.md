@@ -12,24 +12,15 @@ World
 OK
 ```
 
-# Evaluate $? with if statement
+# Evaluate $? with if statement, using (()) and [[]]
 
 ```bash
-echo "Hellow World!"
-```
-
-```bash
-if (( $? )) ; then echo failed ; else echo OK; fi
-```
-
-```console
-OK
-```
-
-```bash
-cd mytmp
-```
-
-```bash
-if (( $? )); then rm * ; fi
+❯ echo "Hello World"
+Hello World
+❯ if [[ $? ]]; then echo "successfully execution $?"; else echo "execuion failed"; fi
+successfully execution 0
+❯ echo "Hello World"
+Hello World
+❯ if (( $? )); then echo "execution failed $?"; else echo "successfull execution $?"; fi
+successfull execution 1
 ```
