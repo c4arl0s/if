@@ -49,3 +49,21 @@ then
     # exit 1 # uncomment on a script
 fi
 ```
+
+# Using if (( )) and elif statement
+
+```bash
+if (( $# < 3 ))
+then
+    printf "%b" "Error. Not enough arguments.\n"
+    printf "%b" "usage: myscript file1 op file2\n"
+    # exit 1 # uncomment on a script
+elif (( $# > 3 ))
+then
+    printf "%b" "Error. Too many arguments.\n"
+    printf "%b" "usage: myscript file1 op file2\n"
+    # exit 2 # uncomment on a script
+else
+    printf "%b" "Argument count correct.  Proceeding...\n"
+fi
+```
