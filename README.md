@@ -67,3 +67,11 @@ else
     printf "%b" "Argument count correct.  Proceeding...\n"
 fi
 ```
+
+# Using only [ ]
+
+```bash
+result=1
+[ $result = 1 ] && { echo "Result is 1" }
+Result is 1
+```
