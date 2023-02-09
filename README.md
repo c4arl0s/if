@@ -12,7 +12,7 @@ World
 OK
 ```
 
-# Evaluate $? with if statement, using [[]] and (())
+# Evaluate $? with if statement, using if [[ ]] and if (( ))
 
 ```bash
 ❯ echo "Hello World"
@@ -26,4 +26,26 @@ successful execution 0
 Hello World
 ❯ if (( $? )); then echo "execution failed $?"; else echo "successfull execution, but \$? = $?"; fi
 successfull execution, but $? = 1
+```
+
+# Evaluate using if [ ]
+
+```bash
+if [ $# -lt 3 ]
+then
+    printf "%b" "Error. Not enough arguments.\n"
+    printf "%b" "usage: myscript file1 op file2\n"
+    # exit 1 # uncomment on a script
+fi
+```
+
+Alternatively
+
+```bash
+if (( $# < 3 ))
+then
+    printf "%b" "Error. Not enough arguments.\n"
+    printf "%b" "usage: myscript file1 op file2\n"
+    # exit 1 # uncomment on a script
+fi
 ```
