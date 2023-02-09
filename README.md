@@ -75,3 +75,18 @@ result=1
 [ $result = 1 ] && { echo "Result is 1" }
 Result is 1
 ```
+
+# Using if and test (then you can omit [ ])
+
+```bash
+if test $# -lt 3
+then
+    echo try again.
+fi
+```
+
+Output
+
+```bash
+try again
+```
