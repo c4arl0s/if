@@ -68,6 +68,21 @@ else
 fi
 ```
 
+# Comparing strings inside if statement
+
+```bash
+choice="yes"
+if [ "$choice" = "yes" ]; then
+    echo "Your choice is yes"
+fi
+```
+
+Output:
+
+```console
+Your choice is yes
+```
+
 # Using only [ ]
 
 ```bash
