@@ -105,3 +105,26 @@ Output
 ```bash
 try again
 ```
+
+# Use a command as sentence of if
+
+```bash
+mkdir directory
+if [ $? = 0 ]; then
+    echo "directory was created successfully"
+else 
+    echo "directory was already created"
+fi
+```
+
+move the command into the if statement
+
+```bash
+
+if mkdir directory; then
+    echo "directory was created successfully"
+else 
+    echo "directory was already created"
+fi
+```
+
