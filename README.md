@@ -128,3 +128,20 @@ else
 fi
 ```
 
+# Use test inside and if statement
+
+```bash
+touch ~/file.txt
+if test -f ~/file.txt
+then
+    echo "file exist"
+else 
+    echo "file does not exist"
+fi
+```
+
+console output"
+
+```console
+file exist"
+```
