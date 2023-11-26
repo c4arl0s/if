@@ -12,7 +12,7 @@ World
 OK
 ```
 
-# Evaluate $? with if statement, using if [[ ]] and if (( ))
+# Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`
 
 ```bash
 ❯ echo "Hello World"
@@ -28,7 +28,7 @@ Hello World
 successfull execution, but $? = 1
 ```
 
-# Evaluate using if [ ]
+# Evaluate using `if [ ]`
 
 ```bash
 if [ $# -lt 3 ]
@@ -50,7 +50,7 @@ then
 fi
 ```
 
-# Using if (( )) and elif statement
+# Using `if (( ))` and elif statement
 
 ```bash
 if (( $# < 3 ))
@@ -68,7 +68,7 @@ else
 fi
 ```
 
-# Comparing strings inside if statement
+# Comparing strings inside `if` statement
 
 ```bash
 choice="yes"
@@ -83,7 +83,7 @@ Output:
 Your choice is yes
 ```
 
-# Using only [ ]
+# Using only `[ ]`
 
 ```bash
 result=1
@@ -91,7 +91,7 @@ result=1
 Result is 1
 ```
 
-# Using if and test (then you can omit [ ])
+# Using `if` and `test` (then you can omit `[ ]`)
 
 ```bash
 if test $# -lt 3
@@ -106,7 +106,7 @@ Output
 try again
 ```
 
-# Use a command as sentence of if
+# Use a command as sentence of `if`
 
 ```bash
 mkdir directory
@@ -117,7 +117,7 @@ else
 fi
 ```
 
-move the command into the if statement
+move the command into the `if` statement
 
 ```bash
 
@@ -128,7 +128,7 @@ else
 fi
 ```
 
-# Use test inside and if statement
+# Use `test` inside and `if` statement
 
 ```bash
 touch ~/file.txt
@@ -140,8 +140,28 @@ else
 fi
 ```
 
-console output"
+console output
 
 ```console
 file exist"
 ```
+
+# Equivalence using `if-else` statement and `command && command || command`
+
+```bash
+if cp file.txt $HOME/iOS-Projects; then
+    echo "Done"
+else 
+    echo "failed"
+    exit 1
+fi
+```
+
+Equivalence:
+
+```bash
+cp file.txt $HOME/iOS-Projects && { echo "Done" } || { echo "Failed"; exit 1 }
+```
+
+> In this case we should use the exit command in order to point out that the command was not successfully executed"
+
