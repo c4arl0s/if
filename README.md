@@ -31,40 +31,36 @@ successfull execution, but $? = 1
 # Evaluate using `if [ ]`
 
 ```bash
-if [ $# -lt 3 ]
-then
-    printf "%b" "Error. Not enough arguments.\n"
-    printf "%b" "usage: myscript file1 op file2\n"
-    # exit 1 # uncomment on a script
+if [ $# -lt 3 ]; then
+  printf "%b" "Error. Not enough arguments.\n"
+  printf "%b" "usage: myscript file1 op file2\n"
+  # exit 1 # uncomment on a script
 fi
 ```
 
 Alternatively
 
 ```bash
-if (( $# < 3 ))
-then
-    printf "%b" "Error. Not enough arguments.\n"
-    printf "%b" "usage: myscript file1 op file2\n"
-    # exit 1 # uncomment on a script
+if (( $# < 3 )); then
+  printf "%b" "Error. Not enough arguments.\n"
+  printf "%b" "usage: myscript file1 op file2\n"
+  # exit 1 # uncomment on a script
 fi
 ```
 
 # Using `if (( ))` and elif statement
 
 ```bash
-if (( $# < 3 ))
-then
-    printf "%b" "Error. Not enough arguments.\n"
-    printf "%b" "usage: myscript file1 op file2\n"
-    # exit 1 # uncomment on a script
-elif (( $# > 3 ))
-then
-    printf "%b" "Error. Too many arguments.\n"
-    printf "%b" "usage: myscript file1 op file2\n"
-    # exit 2 # uncomment on a script
+if (( $# < 3 )); then
+  printf "%b" "Error. Not enough arguments.\n"
+  printf "%b" "usage: myscript file1 op file2\n"
+  # exit 1 # uncomment on a script
+elif (( $# > 3 )); then
+  printf "%b" "Error. Too many arguments.\n"
+  printf "%b" "usage: myscript file1 op file2\n"
+  # exit 2 # uncomment on a script
 else
-    printf "%b" "Argument count correct.  Proceeding...\n"
+  printf "%b" "Argument count correct.  Proceeding...\n"
 fi
 ```
 
@@ -73,7 +69,7 @@ fi
 ```bash
 choice="yes"
 if [ "$choice" = "yes" ]; then
-    echo "Your choice is yes"
+  echo "Your choice is yes"
 fi
 ```
 
@@ -94,9 +90,8 @@ Result is 1
 # Using `if` and `test` (then you can omit `[ ]`)
 
 ```bash
-if test $# -lt 3
-then
-    echo try again.
+if test $# -lt 3; then
+  echo try again.
 fi
 ```
 
@@ -111,9 +106,9 @@ try again
 ```bash
 mkdir directory
 if [ $? = 0 ]; then
-    echo "directory was created successfully"
+  echo "directory was created successfully"
 else 
-    echo "directory was already created"
+  echo "directory was already created"
 fi
 ```
 
@@ -121,9 +116,9 @@ move the command into the `if` statement
 
 ```bash
 if mkdir directory; then
-    echo "directory was created successfully"
+  echo "directory was created successfully"
 else 
-    echo "directory was already created"
+  echo "directory was already created"
 fi
 ```
 
@@ -154,11 +149,10 @@ fi
 
 ```bash
 touch ~/file.txt
-if test -f ~/file.txt
-then
-    echo "file exist"
+if test -f ~/file.txt; then
+  echo "file exist"
 else 
-    echo "file does not exist"
+  echo "file does not exist"
 fi
 ```
 
@@ -172,10 +166,10 @@ file exist"
 
 ```bash
 if cp file.txt $HOME/iOS-Projects; then
-    echo "Done"
+  echo "Done"
 else 
-    echo "failed"
-    exit 1
+  echo "failed"
+  exit 1
 fi
 ```
 
