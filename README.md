@@ -120,11 +120,33 @@ fi
 move the command into the `if` statement
 
 ```bash
-
 if mkdir directory; then
     echo "directory was created successfully"
 else 
     echo "directory was already created"
+fi
+```
+
+# Use double square bracket `[[ ]]` to test strings
+
+```bash
+if [[ "${var}" == "some_string" ]]; then
+  echo "do something"
+fi
+```
+
+```bash
+# -z (string length is zero) and -n (string length is not zero) are
+# preferred over testing for an empty string
+if [[ -z "${my_var}" ]]; then
+  echo "do something"
+fi
+```
+
+```bash
+# This is OK (ensure quotes on the empty side), but not preferred:
+if [[ "${my_var}" == "" ]]; then
+  echo "do something"
 fi
 ```
 
@@ -163,5 +185,4 @@ Equivalence:
 cp file.txt $HOME/iOS-Projects && { echo "Done" } || { echo "Failed"; exit 1 }
 ```
 
-> In this case we should use the exit command in order to point out that the command was not successfully executed"
-
+> In this case we should use the exit command in order to point out that the command was not successfully executed" 
