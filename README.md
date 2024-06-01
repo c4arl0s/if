@@ -1,6 +1,19 @@
 # Snippets for if-sentence
 
-# if-else
+1. [if-else]()
+2. [Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`]()
+3. [Evaluate using `if [ ]`]()
+4. [Using `if (( ))` and elif statement]()
+5. [Comparing strings inside `if` statement]()
+6. [Using only `[ ]`]()
+7. [Using `if` and `test` (then you can omit `[ ]`)]()
+8. [Use a command as sentence of `if`]()
+9. [Use double square bracket `[[ ]]` to test strings]()
+10. [Use `test` inside and `if` statement]()
+11. [Equivalence using `if-else` statement and `command && command || command`]()
+12. [Multiple conditions on if statement]()
+
+# 1. if-else
 
 ```bash
 if echo "hello" && echo "World"; then echo "OK"; fi
@@ -12,7 +25,7 @@ World
 OK
 ```
 
-# Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`
+# 2. Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`
 
 ```bash
 ❯ echo "Hello World"
@@ -28,7 +41,7 @@ Hello World
 successfull execution, but $? = 1
 ```
 
-# Evaluate using `if [ ]`
+# 3. Evaluate using `if [ ]`
 
 ```bash
 if [ $# -lt 3 ]; then
@@ -48,7 +61,7 @@ if (( $# < 3 )); then
 fi
 ```
 
-# Using `if (( ))` and elif statement
+# 4. Using `if (( ))` and elif statement
 
 ```bash
 if (( $# < 3 )); then
@@ -64,7 +77,7 @@ else
 fi
 ```
 
-# Comparing strings inside `if` statement
+# 5. Comparing strings inside `if` statement
 
 ```bash
 choice="yes"
@@ -79,7 +92,7 @@ Output:
 Your choice is yes
 ```
 
-# Using only `[ ]`
+# 6. Using only `[ ]`
 
 ```bash
 result=1
@@ -87,7 +100,7 @@ result=1
 Result is 1
 ```
 
-# Using `if` and `test` (then you can omit `[ ]`)
+# 7. Using `if` and `test` (then you can omit `[ ]`)
 
 ```bash
 if test $# -lt 3; then
@@ -101,7 +114,7 @@ Output
 try again
 ```
 
-# Use a command as sentence of `if`
+# 8. Use a command as sentence of `if`
 
 ```bash
 mkdir directory
@@ -122,7 +135,7 @@ else
 fi
 ```
 
-# Use double square bracket `[[ ]]` to test strings
+# 9. Use double square bracket `[[ ]]` to test strings
 
 ```bash
 if [[ "${var}" == "some_string" ]]; then
@@ -145,7 +158,7 @@ if [[ "${my_var}" == "" ]]; then
 fi
 ```
 
-# Use `test` inside and `if` statement
+# 10. Use `test` inside and `if` statement
 
 ```bash
 touch ~/file.txt
@@ -162,7 +175,7 @@ console output
 file exist"
 ```
 
-# Equivalence using `if-else` statement and `command && command || command`
+# 11. Equivalence using `if-else` statement and `command && command || command`
 
 ```bash
 if cp file.txt $HOME/iOS-Projects; then
@@ -181,7 +194,7 @@ cp file.txt $HOME/iOS-Projects && { echo "Done" } || { echo "Failed"; exit 1 }
 
 > In this case we should use the exit command in order to point out that the command was not successfully executed" 
 
-# Multiple conditions on if statement
+# 12. Multiple conditions on if statement
 
 ```bash
 #!/bin/bash
