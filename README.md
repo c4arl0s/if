@@ -201,11 +201,11 @@ cp file.txt $HOME/iOS-Projects && { echo "Done" } || { echo "Failed"; exit 1 }
 
 var_one=1
 
-# Only one var might be set
+# Only one var might be set or none of them
 var_two=
 var_three=1
 
-# Only one flag might be set
+# Only one flag might be set or none of them
 flag_one=
 flag_two=
 flag_three=
