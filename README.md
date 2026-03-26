@@ -1,83 +1,131 @@
-# Snippets for if-sentence
+# Bash `if` statement snippets
 
-1. [if-else](https://github.com/c4arl0s/if?tab=readme-ov-file#1-if-else)
-2. [Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`](https://github.com/c4arl0s/if?tab=readme-ov-file#2-evaluate--with-if-statement-using-if---and-if--)
-3. [Evaluate using `if [ ]`](https://github.com/c4arl0s/if?tab=readme-ov-file#3-evaluate-using-if--)
-4. [Using `if (( ))` and elif statement](https://github.com/c4arl0s/if?tab=readme-ov-file#4-using-if---and-elif-statement)
-5. [Comparing strings inside `if` statement](https://github.com/c4arl0s/if?tab=readme-ov-file#5-comparing-strings-inside-if-statement)
-6. [Using only `[ ]`](https://github.com/c4arl0s/if?tab=readme-ov-file#6-using-only--)
-7. [Using `if` and `test` (then you can omit `[ ]`)](https://github.com/c4arl0s/if?tab=readme-ov-file#7-using-if-and-test-then-you-can-omit--)
-8. [Use a command as sentence of `if`](https://github.com/c4arl0s/if?tab=readme-ov-file#8-use-a-command-as-sentence-of-if)
-9. [Use double square bracket `[[ ]]` to test strings](https://github.com/c4arl0s/if?tab=readme-ov-file#9-use-double-square-bracket---to-test-strings)
-10. [Use `test` inside and `if` statement](https://github.com/c4arl0s/if?tab=readme-ov-file#10-use-test-inside-and-if-statement)
-11. [Equivalence using `if-else` statement and `command && command || command`](https://github.com/c4arl0s/if?tab=readme-ov-file#11-equivalence-using-if-else-statement-and-command--command--command)
-12. [Multiple conditions on if statement](https://github.com/c4arl0s/if?tab=readme-ov-file#12-multiple-conditions-on-if-statement)
+Examples below are written for **Bash** on **macOS** (for example `/bin/bash` or `bash` from [Homebrew](https://brew.sh)). They use POSIX-compatible `[` / `test`, Bash `[[ ]]`, and arithmetic `(( ))`, all of which work with the Bash version Apple ships.
 
-# 1. [if-else](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+**Note:** macOS defaults to **zsh** in Terminal; run `bash` first, or save snippets in a script with `#!/bin/bash` and execute it with `bash script.sh`.
+
+---
+
+## Table of contents
+
+1. [if / else](#section-1-if-else)
+2. [Exit status (`$?`) with `[[ ]]` and `(( ))`](#section-2-exit-status)
+3. [Argument count with `if [ ]` and `(( ))`](#section-3-argument-count)
+4. [`if (( ))` with `elif`](#section-4-elif)
+5. [Comparing strings in `if`](#section-5-strings)
+6. [Using `[ ]` without `if`](#section-6-brackets-alone)
+7. [`if` with `test` (without `[ ]`)](#section-7-test)
+8. [Using a command directly in `if`](#section-8-command-in-if)
+9. [`[[ ]]` for string tests](#section-9-double-bracket)
+10. [`test` inside an `if`](#section-10-test-in-if)
+11. [`if` / `else` vs `&&` / `||` (and caveats)](#section-11-if-vs-short-circuit)
+12. [Multiple conditions](#section-12-multiple)
+
+---
+
+<a id="section-1-if-else"></a>
+
+## 1. if / else
+
+Run two commands in the condition; if both succeed, the `then` branch runs.
 
 ```bash
 if echo "hello" && echo "World"; then echo "OK"; fi
 ```
 
-```console
+Expected output:
+
+```text
 hello
 World
 OK
 ```
 
-# 2. [Evaluate `$?` with `if` statement, using `if [[ ]]` and `if (( ))`](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-2-exit-status"></a>
+
+## 2. Exit status (`$?`) with `[[ ]]` and `(( ))`
+
+After a command, `$?` is its exit code: `0` means success, non-zero means failure.
+
+**Do not use `if [[ $? ]]`** to mean “did the last command succeed?” In Bash, `[[ string ]]` is true when `string` is non-empty. Both `0` and `1` are non-empty, so this stays true almost always and does **not** reflect success vs failure.
+
+Correct patterns:
 
 ```bash
-❯ echo "Hello World"
-Hello World
-❯ if [[ $? ]]; then echo "successful execution $?"; else echo "execution failed"; fi
-successful execution 0
-```
-
-```bash
-❯ echo "Hello World"
-Hello World
-❯ if (( $? )); then echo "execution failed $?"; else echo "successfull execution, but \$? = $?"; fi
-successfull execution, but $? = 1
-```
-
-# 3. [Evaluate using `if [ ]`](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
-
-```bash
-if [ $# -lt 3 ]; then
-  printf "%b" "Error. Not enough arguments.\n"
-  printf "%b" "usage: myscript file1 op file2\n"
-  # exit 1 # uncomment on a script
+echo "Hello World"
+if [[ $? -eq 0 ]]; then
+  echo "successful execution (exit code 0)"
+else
+  echo "execution failed"
 fi
 ```
 
-Alternatively
+Using arithmetic (exit code `0` is “false” in `(( ))`, non-zero is “true”):
+
+```bash
+echo "Hello World"
+if (( $? != 0 )); then
+  echo "execution failed (exit code $?)"
+else
+  echo "successful execution (exit code 0)"
+fi
+```
+
+---
+
+<a id="section-3-argument-count"></a>
+
+## 3. Argument count with `if [ ]` and `(( ))`
+
+Check the number of positional parameters (`$#`). Typical use at the top of a script.
+
+```bash
+if [ "$#" -lt 3 ]; then
+  printf "%b" "Error. Not enough arguments.\n"
+  printf "%b" "usage: myscript file1 op file2\n"
+  # exit 1   # uncomment in a real script
+fi
+```
+
+Equivalent with arithmetic `(( ))` (Bash; also fine on macOS Bash):
 
 ```bash
 if (( $# < 3 )); then
   printf "%b" "Error. Not enough arguments.\n"
   printf "%b" "usage: myscript file1 op file2\n"
-  # exit 1 # uncomment on a script
+  # exit 1
 fi
 ```
 
-# 4. [Using `if (( ))` and elif statement](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-4-elif"></a>
+
+## 4. `if (( ))` with `elif`
 
 ```bash
 if (( $# < 3 )); then
   printf "%b" "Error. Not enough arguments.\n"
   printf "%b" "usage: myscript file1 op file2\n"
-  # exit 1 # uncomment on a script
+  # exit 1
 elif (( $# > 3 )); then
   printf "%b" "Error. Too many arguments.\n"
   printf "%b" "usage: myscript file1 op file2\n"
-  # exit 2 # uncomment on a script
+  # exit 2
 else
-  printf "%b" "Argument count correct.  Proceeding...\n"
+  printf "%b" "Argument count OK. Proceeding...\n"
 fi
 ```
 
-# 5. [Comparing strings inside `if` statement](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-5-strings"></a>
+
+## 5. Comparing strings in `if`
+
+Quote variables to avoid word splitting and empty expansions.
 
 ```bash
 choice="yes"
@@ -86,56 +134,91 @@ if [ "$choice" = "yes" ]; then
 fi
 ```
 
-Output:
+Expected output:
 
-```console
+```text
 Your choice is yes
 ```
 
-# 6. [Using only `[ ]`](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-6-brackets-alone"></a>
+
+## 6. Using `[ ]` without `if`
+
+The test can stand alone; the `&&` runs the next command only if the test is true.
 
 ```bash
 result=1
-[ $result = 1 ] && { echo "Result is 1" }
+[ "$result" -eq 1 ] && { echo "Result is 1"; }
+```
+
+Expected output:
+
+```text
 Result is 1
 ```
 
-# 7. [Using `if` and `test` (then you can omit `[ ]`)](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+Using `=` instead of `-eq` works for string comparison; `-eq` is clearer for integers.
+
+---
+
+<a id="section-7-test"></a>
+
+## 7. `if` with `test` (without `[ ]`)
+
+`[` is another spelling of `test`. Same behavior on macOS.
 
 ```bash
-if test $# -lt 3; then
-  echo try again.
+if test "$#" -lt 3; then
+  echo "try again."
 fi
 ```
 
-Output
+If you run that with fewer than three arguments (e.g. inside a script), you get:
 
-```bash
-try again
+```text
+try again.
 ```
 
-# 8. [Use a command as sentence of `if`](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-8-command-in-if"></a>
+
+## 8. Using a command directly in `if`
+
+Prefer putting the command in `if` instead of checking `$?` separately (clearer and avoids races with other commands).
+
+First pattern (checks exit status of `mkdir` explicitly — use `-eq` for integers):
 
 ```bash
 mkdir directory
-if [ $? = 0 ]; then
+if [ "$?" -eq 0 ]; then
   echo "directory was created successfully"
-else 
-  echo "directory was already created"
+else
+  echo "mkdir failed (e.g. directory may already exist)"
 fi
 ```
 
-move the command into the `if` statement
+Preferred: command in the `if` condition:
 
 ```bash
 if mkdir directory; then
   echo "directory was created successfully"
-else 
-  echo "directory was already created"
+else
+  echo "mkdir failed (e.g. directory may already exist)"
 fi
 ```
 
-# 9. [Use double square bracket `[[ ]]` to test strings](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+On macOS, `mkdir` without `-p` fails if `directory` already exists, which triggers the `else` branch.
+
+---
+
+<a id="section-9-double-bracket"></a>
+
+## 9. `[[ ]]` for string tests
+
+Pattern match (Bash; no globbing surprises on the right unless you intend it):
 
 ```bash
 if [[ "${var}" == "some_string" ]]; then
@@ -143,58 +226,77 @@ if [[ "${var}" == "some_string" ]]; then
 fi
 ```
 
+Prefer `-z` (empty) and `-n` (non-empty) over comparing to `""`:
+
 ```bash
-# -z (string length is zero) and -n (string length is not zero) are
-# preferred over testing for an empty string
 if [[ -z "${my_var}" ]]; then
   echo "do something"
 fi
 ```
 
+Possible but not preferred:
+
 ```bash
-# This is OK (ensure quotes on the empty side), but not preferred:
 if [[ "${my_var}" == "" ]]; then
   echo "do something"
 fi
 ```
 
-# 10. [Use `test` inside and `if` statement](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-10-test-in-if"></a>
+
+## 10. `test` inside an `if`
 
 ```bash
-touch ~/file.txt
-if test -f ~/file.txt; then
-  echo "file exist"
-else 
+touch "${HOME}/file.txt"
+if test -f "${HOME}/file.txt"; then
+  echo "file exists"
+else
   echo "file does not exist"
 fi
 ```
 
-console output
+Expected output:
 
-```console
-file exist"
+```text
+file exists
 ```
 
-# 11. [Equivalence using `if-else` statement and `command && command || command`](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-11-if-vs-short-circuit"></a>
+
+## 11. `if` / `else` vs `&&` / `||` (and caveats)
+
+Explicit `if`:
 
 ```bash
-if cp file.txt $HOME/iOS-Projects; then
+if cp file.txt "${HOME}/Desktop/"; then
   echo "Done"
-else 
+else
   echo "failed"
   exit 1
 fi
 ```
 
-Equivalence:
+**Note:** Adjust the destination (`"${HOME}/Desktop/"` here); create the directory first if needed.
+
+Compact form:
 
 ```bash
-cp file.txt $HOME/iOS-Projects && { echo "Done" } || { echo "Failed"; exit 1 }
+cp file.txt "${HOME}/Desktop/" && { echo "Done"; } || { echo "Failed"; exit 1; }
 ```
 
-> In this case we should use the exit command in order to point out that the command was not successfully executed" 
+**Caveat:** `cmd && a || b` is **not** always equivalent to `if cmd; then a; else b; fi`. If `a` runs but returns a non-zero exit status, `b` can still run. Prefer `if` / `else` when both branches must be mutually exclusive.
 
-# 12. [Multiple conditions on if statement](https://github.com/c4arl0s/if?tab=readme-ov-file#snippets-for-if-sentence)
+---
+
+<a id="section-12-multiple"></a>
+
+## 12. Multiple conditions
+
+Example script logic: combine `[[ ]]` tests with `&&` and `||`. The comment is a reminder to sketch a truth table for your real rules.
 
 ```bash
 #!/bin/bash
@@ -210,7 +312,7 @@ flag_one=
 flag_two=
 flag_three=
 
-# draw table of thruth
+# truth table for the condition below (adapt to your real rules)
 
 if [[ "${var_one}" ]] \
   && { [[ "${var_two}" ]] || [[ "${var_three}" ]]; } \
@@ -223,13 +325,15 @@ if [[ "${var_one}" ]] \
 fi
 ```
 
-```console
+Running the script:
+
+```text
 ./if-statement.sh
 ```
 
-Console output:
+Example output for the variable values above:
 
-```console
+```text
 flag_one=
 flag_two=
 flag_three=
